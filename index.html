@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Browser</title>
+</head>
+<body>
+    <center>
+        <button class="btn" onclick='window.history.back()'>
+            <i class="bi bi-chevron-double-left"></i>
+        </button>
+
+        <button class="btn" onclick='window.location.reload()'><i class="bi bi-house"></i></button>
+
+        <button class="btn"><i class="bi bi-chevron-double-right" onclick="window.history.forward()"></i></button>
+
+        <input type='text' class='in' placeholder='Enter Query/URL'>
+        &nbsp;
+
+        <button class='btn' onclick='Go()'>GO</button>
+    </center>
+    <br>
+    <iframe src='https://web.archive.org/web/1998/https://www.google.com/' id='frame'></iframe>
+</body>
+
+<style>
+    #frame{
+        width: 100%;
+        height: 90vh;
+        border: 0px;
+    }
+    .in{
+        margin-bottom: 5px;
+        width: 80%;
+        border-radius: 50px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 20px;
+        outline: none;
+        border: 1px solid black;
+    }
+    .btn{
+        border: 1px solid lightgrey;
+        background-color: lightgrey;
+        border-radius: 50px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 20px;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    function Go(){
+        var out="";
+        var text=document.querySelector('.in').value;
+        if (text.startsWith('http://') || text.startsWith('https://')){
+            out=text;
+        }
+        else{
+            try{
+                if (text.split('/')[0].endsWith('.com') || text.split('/')[0].endsWith('.io')){
+                    out='https://'+text;
+                }
+                else{
+                    var txt=text.replace(' ', '+');
+                    out='https://google.com/search?q='+txt+'&gws_rd=ssl';
+                }
+            }
+            catch{
+                if (text.split()[0].endsWith('.com') || text.split()[0].endsWith('.io')){
+                    out='https://'+text;
+                }
+                else{
+                    var txt=text.replace(' ', '+');
+                    out='https://google.com/search?q='+txt+"&gws_rd=ssl";
+                }
+            }
+        }
+        document.getElementById('frame').src="https://web.archive.org/web/2020/"+out;
+    }
+
+    document.querySelector('.in').addEventListener('keyup', function (e){
+        if (e.which == 13){
+            Go()
+        }
+    })
+</script>
+
+</html>
